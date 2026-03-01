@@ -1,13 +1,6 @@
 import {
-  Flame,
-  Smartphone,
-  Gamepad2,
-  ShoppingBag,
-  Home,
-  Sparkles,
-  Dumbbell,
-  BookOpen,
-  type LucideIcon,
+  Flame, Smartphone, Gamepad2, ShoppingBag,
+  Home, Sparkles, Dumbbell, BookOpen, type LucideIcon,
 } from "lucide-react";
 import { categories } from "@/lib/mock-data";
 
@@ -24,15 +17,20 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default function CategorySection() {
   return (
-    <section id="categories" className="border-b border-white/8 bg-zinc-950 py-5">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex gap-2 overflow-x-auto pb-0.5">
-          {categories.map((cat) => {
+    <section id="categories" className="bg-slate-900 border-b border-slate-800">
+      <div className="mx-auto max-w-7xl px-6 py-4">
+        <div className="flex items-center gap-2 overflow-x-auto">
+          {categories.map((cat, i) => {
             const Icon = iconMap[cat.id];
+            const active = i === 0;
             return (
               <button
                 key={cat.id}
-                className="flex shrink-0 items-center gap-2 rounded-lg border border-white/8 bg-zinc-900 px-4 py-2.5 text-sm font-medium text-zinc-400 transition-all hover:border-violet-500/40 hover:bg-violet-500/8 hover:text-white"
+                className={`flex shrink-0 items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                  active
+                    ? "bg-blue-600 text-white"
+                    : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                }`}
               >
                 {Icon && <Icon size={14} />}
                 {cat.label}

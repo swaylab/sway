@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const quicksand = Quicksand({
-  variable: "--font-sans",
+  variable: "--font-quicksand",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -22,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <body className={`${quicksand.variable} bg-zinc-950 antialiased`}>
+    <html lang="en" className={`dark ${quicksand.variable}`}>
+      <body className="bg-slate-950 antialiased">
         <Header />
         {children}
         <Footer />

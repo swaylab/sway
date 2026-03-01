@@ -1,90 +1,122 @@
-import { ArrowRight, ShieldCheck, TrendingDown, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, ShieldCheck, Users, TrendingDown } from "lucide-react";
 import { stats } from "@/lib/mock-data";
-
-const statItems = [
-  { label: "Active Pools", value: stats.activePools.toLocaleString(), icon: Users },
-  { label: "Total Saved", value: `$${stats.totalSaved}`, icon: TrendingDown },
-  { label: "Members", value: `${(stats.members / 1000).toFixed(1)}K`, icon: ShieldCheck },
-];
 
 export default function HeroSection() {
   return (
-    <section className="border-b border-white/8 bg-zinc-950 py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-start justify-between gap-12 lg:flex-row lg:items-center">
+    <section className="bg-slate-950 border-b border-slate-800">
+      {/* Top banner */}
+      <div className="border-b border-slate-800 bg-blue-600/10">
+        <div className="mx-auto max-w-7xl px-6 py-2.5 flex items-center justify-between">
+          <p className="text-xs font-semibold text-blue-300">
+            🔒 All funds secured by audited smart contracts on Ethereum
+          </p>
+          <p className="hidden sm:block text-xs font-semibold text-slate-500">
+            Non-custodial · Trustless · Transparent
+          </p>
+        </div>
+      </div>
 
-          <div className="max-w-2xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-violet-500/25 bg-violet-500/8 px-3.5 py-1.5 text-xs font-semibold text-violet-300 tracking-wide uppercase">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse" />
-              Powered by smart contracts
+      <div className="mx-auto max-w-7xl px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+          {/* Left */}
+          <div>
+            <div className="inline-flex items-center gap-2 bg-blue-600/10 border border-blue-500/20 rounded-full px-4 py-1.5 mb-8">
+              <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse" />
+              <span className="text-xs font-bold text-blue-300 uppercase tracking-wider">
+                Web3-Powered Group Buying
+              </span>
             </div>
 
-            <h1 className="mb-5 text-5xl font-bold leading-[1.15] tracking-tight text-white lg:text-6xl">
-              Buy Together,
+            <h1 className="text-5xl lg:text-6xl font-bold text-white leading-[1.08] tracking-tight mb-6">
+              Pool your demand.
               <br />
-              <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                Save Together.
-              </span>
+              <span className="text-blue-400">Pay less.</span>
             </h1>
 
-            <p className="mb-8 max-w-lg text-base font-medium text-zinc-400 leading-relaxed">
-              Pool your demand with other buyers, unlock bulk discounts, and pay less — every transaction secured and transparent on-chain.
+            <p className="text-slate-400 text-base font-semibold leading-relaxed mb-10 max-w-md">
+              Alone you pay retail. Together you pay wholesale.
+              Sway pools buyers, invites sellers to compete, and locks every transaction on-chain.
             </p>
 
-            <div className="flex flex-wrap gap-3">
-              <Button className="gap-2 bg-violet-600 px-6 text-sm font-semibold text-white hover:bg-violet-500">
-                Browse Pools
+            <div className="flex items-center gap-3 mb-12">
+              <button className="flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-colors">
+                Browse Active Pools
                 <ArrowRight size={15} />
-              </Button>
-              <Button
-                variant="outline"
-                className="border-white/15 bg-transparent px-6 text-sm font-semibold text-white hover:bg-white/8 hover:border-white/25"
-              >
+              </button>
+              <button className="px-6 py-3 border border-slate-700 hover:border-slate-600 text-white text-sm font-bold rounded-xl transition-colors hover:bg-slate-800/60">
                 Create a Pool
-              </Button>
+              </button>
             </div>
-          </div>
 
-          <div className="flex w-full flex-col gap-3 lg:w-80">
-            <div className="grid grid-cols-3 gap-3">
-              {statItems.map(({ label, value, icon: Icon }) => (
-                <div
-                  key={label}
-                  className="rounded-xl border border-white/8 bg-zinc-900 p-4 text-center"
-                >
-                  <Icon size={16} className="mx-auto mb-2 text-zinc-500" />
+            {/* Stats row */}
+            <div className="grid grid-cols-3 gap-4">
+              {[
+                { icon: Users, value: stats.activePools.toLocaleString(), label: "Active Pools", color: "text-blue-400" },
+                { icon: TrendingDown, value: `$${stats.totalSaved}`, label: "Total Saved", color: "text-emerald-400" },
+                { icon: ShieldCheck, value: `${(stats.members / 1000).toFixed(0)}K+`, label: "Members", color: "text-blue-400" },
+              ].map(({ icon: Icon, value, label, color }) => (
+                <div key={label} className="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+                  <Icon size={16} className={`${color} mb-2`} />
                   <div className="text-xl font-bold text-white">{value}</div>
-                  <div className="mt-0.5 text-[11px] font-medium text-zinc-500">{label}</div>
+                  <div className="text-xs font-semibold text-slate-500 mt-0.5">{label}</div>
                 </div>
               ))}
             </div>
+          </div>
 
-            <div className="rounded-xl border border-white/8 bg-zinc-900 p-5">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="text-xs font-semibold text-zinc-400 uppercase tracking-wide">Savings Example</span>
-                <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-xs font-bold text-emerald-400">
-                  -21%
+          {/* Right — price comparison card */}
+          <div className="relative">
+            <div className="absolute -inset-4 bg-blue-600/5 rounded-3xl blur-2xl" />
+            <div className="relative bg-slate-900 border border-slate-700 rounded-2xl overflow-hidden">
+              {/* Card header */}
+              <div className="bg-slate-800 px-6 py-4 flex items-center justify-between border-b border-slate-700">
+                <span className="text-sm font-bold text-slate-300">Live Example</span>
+                <span className="text-xs font-bold text-emerald-400 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1 rounded-full">
+                  Save $250
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-[11px] font-medium text-zinc-500">Individual</div>
-                  <div className="text-lg font-bold text-zinc-500 line-through">$1,199</div>
+
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-6">
+                  <div>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Product</p>
+                    <p className="text-base font-bold text-white">iPhone 16 Pro Max</p>
+                    <p className="text-xs text-slate-500 font-semibold mt-0.5">256GB · Natural Titanium</p>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-2xl">
+                    📱
+                  </div>
                 </div>
-                <div className="rounded-full border border-white/10 p-2">
-                  <ArrowRight size={14} className="text-zinc-500" />
+
+                <div className="grid grid-cols-2 gap-3 mb-6">
+                  <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+                    <p className="text-xs font-bold text-slate-500 mb-1">Individual</p>
+                    <p className="text-2xl font-bold text-slate-400 line-through">$1,199</p>
+                    <p className="text-xs text-slate-600 font-semibold mt-1">Apple Store price</p>
+                  </div>
+                  <div className="bg-blue-600/10 rounded-xl p-4 border border-blue-500/30">
+                    <p className="text-xs font-bold text-blue-400 mb-1">Pool Price</p>
+                    <p className="text-2xl font-bold text-white">$949</p>
+                    <p className="text-xs text-emerald-400 font-bold mt-1">-21% savings</p>
+                  </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-[11px] font-medium text-zinc-500">Pool of 100</div>
-                  <div className="text-lg font-bold text-white">$949</div>
+
+                <div className="mb-2 flex items-center justify-between text-xs font-bold">
+                  <span className="text-slate-400">Pool Progress</span>
+                  <span className="text-white">67 / 100 buyers</span>
                 </div>
+                <div className="h-2.5 bg-slate-800 rounded-full overflow-hidden mb-6">
+                  <div className="h-full w-[67%] bg-blue-500 rounded-full" />
+                </div>
+
+                <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-colors">
+                  Join This Pool
+                </button>
               </div>
-              <p className="mt-3 text-[11px] text-zinc-600 leading-relaxed">
-                Funds locked in smart contract. Released only when the deal closes.
-              </p>
             </div>
           </div>
+
         </div>
       </div>
     </section>

@@ -1,14 +1,9 @@
 import Image from "next/image";
-import { Clock, Users, Flame, Sparkles, AlertCircle, TrendingDown } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { Clock, Users, TrendingDown, Flame, Sparkles, AlertCircle } from "lucide-react";
 
 type Pool = {
   id: string;
   title: string;
-  category: string;
   categoryLabel: string;
   imageUrl: string;
   individualPrice: number;
@@ -19,97 +14,104 @@ type Pool = {
   status: string;
 };
 
-type Props = {
-  pool: Pool;
-};
+type Props = { pool: Pool };
 
-const statusConfig: Record<string, { label: string; className: string; icon: React.ReactNode }> = {
+const statusMap: Record<string, { label: string; icon: React.ReactNode; cls: string }> = {
   hot: {
     label: "Hot",
-    className: "border-orange-500/30 bg-orange-500/10 text-orange-400",
-    icon: <Flame size={11} />,
+    icon: <Flame size={11} className="fill-orange-400 text-orange-400" />,
+    cls: "bg-orange-400/15 text-orange-300 border-orange-400/20",
   },
   "ending-soon": {
     label: "Ending Soon",
-    className: "border-red-500/30 bg-red-500/10 text-red-400",
     icon: <AlertCircle size={11} />,
+    cls: "bg-red-400/15 text-red-300 border-red-400/20",
   },
   new: {
     label: "New",
-    className: "border-violet-500/30 bg-violet-500/10 text-violet-400",
     icon: <Sparkles size={11} />,
+    cls: "bg-blue-400/15 text-blue-300 border-blue-400/20",
   },
 };
 
 export default function PoolCard({ pool }: Props) {
   const progress = Math.round((pool.currentParticipants / pool.targetParticipants) * 100);
   const savings = Math.round(((pool.individualPrice - pool.poolPrice) / pool.individualPrice) * 100);
-  const status = statusConfig[pool.status];
+  const status = statusMap[pool.status];
 
   return (
-    <Card className="group flex flex-col gap-0 overflow-hidden border-white/8 bg-zinc-900 p-0 transition-all duration-200 hover:border-violet-500/30 hover:shadow-xl hover:shadow-violet-950/50">
-      <div className="relative h-44 w-full overflow-hidden bg-zinc-800">
+    <div className="group flex flex-col rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-950/30 transition-all duration-200">
+
+      {/* Image */}
+      <div className="relative h-52 bg-slate-800 overflow-hidden">
         <Image
           src={pool.imageUrl}
           alt={pool.title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/60 to-transparent" />
-        <Badge
-          className={`absolute right-3 top-3 flex items-center gap-1 border text-[11px] font-semibold ${status.className}`}
-          variant="outline"
-        >
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent" />
+
+        <div className={`absolute top-3 left-3 flex items-center gap-1.5 border rounded-lg px-2.5 py-1 text-[11px] font-bold backdrop-blur-sm ${status.cls}`}>
           {status.icon}
           {status.label}
-        </Badge>
+        </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-4 p-4">
+      {/* Body */}
+      <div className="flex flex-1 flex-col p-5 gap-4">
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-wide text-zinc-500">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-1">
             {pool.categoryLabel}
           </p>
-          <h3 className="mt-1 text-sm font-bold text-white leading-snug">{pool.title}</h3>
+          <h3 className="text-[15px] font-bold text-white leading-snug">{pool.title}</h3>
         </div>
 
-        <div className="flex items-end justify-between">
+        {/* Pricing */}
+        <div className="flex items-end justify-between bg-slate-800/60 rounded-xl p-3 border border-slate-700/50">
           <div>
-            <p className="text-xs font-medium text-zinc-600 line-through">
-              ${pool.individualPrice.toLocaleString()}
+            <p className="text-xs font-semibold text-slate-500 line-through">
+              ${pool.individualPrice.toLocaleString()} retail
             </p>
-            <p className="text-2xl font-bold tracking-tight text-white">
+            <p className="text-2xl font-bold text-white tracking-tight">
               ${pool.poolPrice.toLocaleString()}
             </p>
           </div>
-          <div className="flex items-center gap-1 rounded-lg bg-emerald-500/12 px-2.5 py-1.5">
+          <div className="flex items-center gap-1 bg-emerald-400/10 border border-emerald-400/20 px-2.5 py-1.5 rounded-lg">
             <TrendingDown size={13} className="text-emerald-400" />
             <span className="text-sm font-bold text-emerald-400">-{savings}%</span>
           </div>
         </div>
 
+        {/* Progress */}
         <div>
-          <div className="mb-2 flex items-center justify-between">
-            <div className="flex items-center gap-1.5 text-xs font-medium text-zinc-400">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-400">
               <Users size={12} />
               <span>
-                <span className="font-bold text-white">{pool.currentParticipants}</span>
-                <span className="text-zinc-500"> / {pool.targetParticipants} joined</span>
+                <span className="text-white font-bold">{pool.currentParticipants}</span>
+                {" "}/{" "}{pool.targetParticipants} joined
               </span>
             </div>
-            <div className="flex items-center gap-1 text-xs font-medium text-zinc-500">
+            <div className="flex items-center gap-1 text-xs font-semibold text-slate-500">
               <Clock size={11} />
-              <span>{pool.timeLeft}</span>
+              {pool.timeLeft}
             </div>
           </div>
-          <Progress value={progress} className="h-1.5 bg-zinc-800" />
+          <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 rounded-full transition-all"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="text-[11px] font-semibold text-slate-600 mt-1.5">{progress}% filled</p>
         </div>
 
-        <Button className="w-full bg-violet-600 text-sm font-semibold text-white hover:bg-violet-500">
+        <button className="mt-auto w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-colors">
           Join Pool
-        </Button>
+        </button>
       </div>
-    </Card>
+    </div>
   );
 }

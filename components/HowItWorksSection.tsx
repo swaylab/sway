@@ -1,8 +1,6 @@
-import { Target, Users, CheckCircle2, Tag, Package } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
+import { Target, Users, CheckCircle2, Tag, Package, type LucideIcon } from "lucide-react";
 
 type Step = {
-  number: string;
   title: string;
   description: string;
   icon: LucideIcon;
@@ -10,82 +8,68 @@ type Step = {
 
 const steps: Step[] = [
   {
-    number: "01",
     title: "Create a Pool",
-    description:
-      "Select a product, set the minimum participant count, and open a pool for others to join.",
+    description: "Pick a product, set the minimum buyer count, and open the pool.",
     icon: Target,
   },
   {
-    number: "02",
-    title: "Others Join",
-    description:
-      "Buyers deposit funds into a smart contract. Funds are locked safely until the deal closes.",
+    title: "Buyers Join",
+    description: "Others join and lock funds in a smart contract. Zero counterparty risk.",
     icon: Users,
   },
   {
-    number: "03",
     title: "Target Reached",
-    description:
-      "Once the participant goal is hit, sellers are notified and invited to submit their best offer.",
+    description: "Goal met — sellers are notified and invited to submit their best price.",
     icon: CheckCircle2,
   },
   {
-    number: "04",
-    title: "Sellers Bid",
-    description:
-      "Sellers and manufacturers compete for one week, submitting their lowest bulk price.",
+    title: "Sellers Compete",
+    description: "Manufacturers and sellers bid against each other for one week.",
     icon: Tag,
   },
   {
-    number: "05",
     title: "Deal Closed",
-    description:
-      "The best offer wins. Products ship, sellers get paid, and everyone saves — on-chain.",
+    description: "Best offer wins. Products ship, funds released on-chain — done.",
     icon: Package,
   },
 ];
 
 export default function HowItWorksSection() {
   return (
-    <section id="how-it-works" className="border-t border-white/8 bg-zinc-900/40 py-20">
+    <section id="how-it-works" className="border-t border-slate-800 bg-slate-900 py-20">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-14 text-center">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-violet-400">
-            The Process
-          </p>
-          <h2 className="text-2xl font-bold text-white">How It Works</h2>
-          <p className="mt-2 text-sm font-medium text-zinc-500">
-            From pool creation to doorstep delivery — transparent and trustless.
+
+        <div className="text-center mb-16">
+          <p className="text-xs font-bold text-blue-400 uppercase tracking-[2px] mb-3">The Process</p>
+          <h2 className="text-3xl font-bold text-white tracking-tight">How It Works</h2>
+          <p className="text-slate-500 font-semibold text-sm mt-3 max-w-sm mx-auto leading-relaxed">
+            Five steps from opening a pool to saving money — all on-chain.
           </p>
         </div>
 
-        <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-5">
-          {steps.map((step, index) => {
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+          {steps.map((step, i) => {
             const Icon = step.icon;
             return (
-              <div key={step.number} className="relative flex flex-col items-center text-center">
-                {index < steps.length - 1 && (
-                  <div className="absolute top-7 left-[calc(50%+2.5rem)] hidden h-px w-[calc(100%-1.5rem)] border-t border-dashed border-white/10 lg:block" />
+              <div key={step.title} className="relative flex flex-col items-center text-center">
+                {i < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-7 left-[calc(50%+2.5rem)] w-[calc(100%-2rem)] h-px border-t border-dashed border-slate-700" />
                 )}
-
                 <div className="relative mb-5">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-zinc-800">
-                    <Icon size={22} className="text-violet-400" />
+                  <div className="w-14 h-14 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center">
+                    <Icon size={22} className="text-blue-400" />
                   </div>
-                  <div className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-violet-600 text-[10px] font-bold text-white">
-                    {index + 1}
+                  <div className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-blue-600 flex items-center justify-center text-[10px] font-bold text-white">
+                    {i + 1}
                   </div>
                 </div>
-
-                <h3 className="mb-2 text-sm font-bold text-white">{step.title}</h3>
-                <p className="text-xs font-medium text-zinc-500 leading-relaxed">
-                  {step.description}
-                </p>
+                <h3 className="text-sm font-bold text-white mb-2">{step.title}</h3>
+                <p className="text-xs font-semibold text-slate-500 leading-relaxed">{step.description}</p>
               </div>
             );
           })}
         </div>
+
       </div>
     </section>
   );
