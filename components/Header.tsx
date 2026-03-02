@@ -1,10 +1,10 @@
 import { Layers, Plus, Wallet } from "lucide-react";
 
 const navItems = [
-  { label: "Pools", href: "#pools" },
-  { label: "Categories", href: "#categories" },
-  { label: "For Sellers", href: "#" },
-  { label: "How It Works", href: "#how-it-works" },
+  { label: "Pools", href: "/#pools" },
+  { label: "Categories", href: "/categories" },
+  { label: "For Sellers", href: "/seller" },
+  { label: "How It Works", href: "/#how-it-works" },
 ];
 
 export default function Header() {
@@ -34,10 +34,13 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <button className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/60 transition-colors">
+          <a
+            href="/create"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/60 transition-colors"
+          >
             <Plus size={14} />
             Create Pool
-          </button>
+          </a>
           <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm font-bold text-white transition-colors">
             <Wallet size={14} />
             Connect Wallet

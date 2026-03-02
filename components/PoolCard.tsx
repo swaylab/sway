@@ -40,7 +40,8 @@ export default function PoolCard({ pool }: Props) {
   const status = statusMap[pool.status];
 
   return (
-    <div className="group flex flex-col rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-950/30 transition-all duration-200">
+    <div className="group relative flex flex-col rounded-2xl border border-slate-800 bg-slate-900 overflow-hidden hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-950/30 transition-all duration-200">
+      <a href={`/pools/${pool.id}`} className="absolute inset-0 z-10" aria-label={pool.title} />
 
       {/* Image */}
       <div className="relative h-52 bg-slate-800 overflow-hidden">
