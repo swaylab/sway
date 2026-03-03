@@ -18,7 +18,6 @@ type FormData = {
   productName: string;
   category: string;
   description: string;
-  imageUrl: string;
   retailPrice: string;
   targetParticipants: string;
   targetPrice: string;
@@ -29,7 +28,6 @@ const defaultForm: FormData = {
   productName: "",
   category: "",
   description: "",
-  imageUrl: "",
   retailPrice: "",
   targetParticipants: "",
   targetPrice: "",
@@ -51,98 +49,76 @@ export default function CreatePoolForm() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      {/* Steps indicator */}
+      {/* Step indicator */}
       <div className="flex items-center gap-0 mb-10">
-        {[
-          { n: 1, label: "Product" },
-          { n: 2, label: "Pool Settings" },
-          { n: 3, label: "Review" },
-        ].map(({ n, label }, i) => (
+        {[{ n: 1, label: "Product" }, { n: 2, label: "Pool Settings" }, { n: 3, label: "Review" }].map(({ n, label }, i) => (
           <div key={n} className="flex items-center">
             <div className="flex flex-col items-center">
-              <div
-                className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                  step > n
-                    ? "bg-emerald-500 text-white"
-                    : step === n
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-800 text-slate-500"
-                }`}
-              >
+              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
+                step > n ? "bg-emerald-500 text-white" : step === n ? "bg-brand text-white" : "bg-surface-2 text-white/30"
+              }`}>
                 {step > n ? <Check size={14} /> : n}
               </div>
-              <span className={`text-[11px] font-bold mt-1.5 ${step === n ? "text-white" : "text-slate-500"}`}>
-                {label}
-              </span>
+              <span className={`text-[11px] font-bold mt-1.5 ${step === n ? "text-lgray" : "text-white/30"}`}>{label}</span>
             </div>
             {i < 2 && (
-              <div className={`h-px w-16 sm:w-28 mx-2 mb-4 transition-all ${step > n ? "bg-emerald-500" : "bg-slate-800"}`} />
+              <div className={`h-px w-16 sm:w-28 mx-2 mb-4 transition-all ${step > n ? "bg-emerald-500" : "bg-white/[0.06]"}`} />
             )}
           </div>
         ))}
       </div>
 
-      {/* Step 1: Product */}
+      {/* Step 1 */}
       {step === 1 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-7 flex flex-col gap-5">
+        <div className="bg-surface border border-white/[0.07] rounded-2xl p-7 flex flex-col gap-5">
           <div>
-            <h2 className="text-xl font-bold text-white mb-1">Product Details</h2>
-            <p className="text-sm font-semibold text-slate-500">What product do you want to pool?</p>
+            <h2 className="text-xl font-bold text-lgray mb-1">Product Details</h2>
+            <p className="text-sm font-semibold text-white/40">What product do you want to pool?</p>
           </div>
 
           <div className="flex flex-col gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Product Name *
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Product Name *</label>
               <input
                 type="text"
                 placeholder="e.g. iPhone 16 Pro Max 256GB"
                 value={form.productName}
                 onChange={(e) => update("productName", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray placeholder-white/20 focus:outline-none focus:border-brand/50 transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Category *
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Category *</label>
               <select
                 value={form.category}
                 onChange={(e) => update("category", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray focus:outline-none focus:border-brand/50 transition-colors"
               >
                 <option value="" disabled>Select a category</option>
-                {categoryOptions.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
+                {categoryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Description
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Description</label>
               <textarea
                 rows={3}
                 placeholder="Briefly describe the product and why others should join..."
                 value={form.description}
                 onChange={(e) => update("description", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray placeholder-white/20 focus:outline-none focus:border-brand/50 transition-colors resize-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Retail / Market Price ($) *
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Retail Price ($) *</label>
               <input
                 type="number"
                 placeholder="e.g. 1199"
                 value={form.retailPrice}
                 onChange={(e) => update("retailPrice", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray placeholder-white/20 focus:outline-none focus:border-brand/50 transition-colors"
               />
             </div>
           </div>
@@ -150,61 +126,52 @@ export default function CreatePoolForm() {
           <button
             onClick={() => setStep(2)}
             disabled={!form.productName || !form.category || !form.retailPrice}
-            className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-sm font-bold rounded-xl transition-colors mt-2"
+            className="flex items-center justify-center gap-2 w-full py-3 bg-brand hover:bg-brand/85 disabled:bg-surface-2 disabled:text-white/25 text-white text-sm font-bold rounded-xl transition-colors mt-2"
           >
-            Continue
-            <ChevronRight size={15} />
+            Continue <ChevronRight size={15} />
           </button>
         </div>
       )}
 
-      {/* Step 2: Pool Settings */}
+      {/* Step 2 */}
       {step === 2 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-7 flex flex-col gap-5">
+        <div className="bg-surface border border-white/[0.07] rounded-2xl p-7 flex flex-col gap-5">
           <div>
-            <h2 className="text-xl font-bold text-white mb-1">Pool Settings</h2>
-            <p className="text-sm font-semibold text-slate-500">Set your target buyers and price goal.</p>
+            <h2 className="text-xl font-bold text-lgray mb-1">Pool Settings</h2>
+            <p className="text-sm font-semibold text-white/40">Set your target buyers and price goal.</p>
           </div>
 
           <div className="flex flex-col gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Minimum Buyers *
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Minimum Buyers *</label>
               <input
                 type="number"
                 placeholder="e.g. 100"
-
                 value={form.targetParticipants}
                 onChange={(e) => update("targetParticipants", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray placeholder-white/20 focus:outline-none focus:border-brand/50 transition-colors"
               />
-              <p className="text-xs text-slate-600 font-semibold mt-1.5">Sellers will be invited once this count is reached.</p>
-
+              <p className="text-xs text-white/25 font-semibold mt-1.5">Sellers will be invited once this count is reached.</p>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Target Pool Price ($) *
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Target Pool Price ($) *</label>
               <input
                 type="number"
                 placeholder="e.g. 949"
                 value={form.targetPrice}
                 onChange={(e) => update("targetPrice", e.target.value)}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-sm font-semibold text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-colors"
+                className="w-full bg-surface-2 border border-white/[0.07] rounded-xl px-4 py-3 text-sm font-semibold text-lgray placeholder-white/20 focus:outline-none focus:border-brand/50 transition-colors"
               />
               {savings > 0 && (
                 <p className="text-xs font-bold text-emerald-400 mt-1.5">
-                  That&apos;s {savings}% off retail — ${Number(form.retailPrice) - Number(form.targetPrice)} saved per buyer.
+                  {savings}% off retail — ${Number(form.retailPrice) - Number(form.targetPrice)} saved per buyer.
                 </p>
               )}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
-                Pool Duration
-              </label>
+              <label className="block text-xs font-bold text-white/40 uppercase tracking-wider mb-2">Pool Duration</label>
               <div className="grid grid-cols-4 gap-2">
                 {durationOptions.map((d) => (
                   <button
@@ -212,8 +179,8 @@ export default function CreatePoolForm() {
                     onClick={() => update("duration", d.value)}
                     className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
                       form.duration === d.value
-                        ? "bg-blue-600 border-blue-600 text-white"
-                        : "bg-slate-800 border-slate-700 text-slate-400 hover:text-white hover:border-slate-600"
+                        ? "bg-brand border-brand text-white"
+                        : "bg-surface-2 border-white/[0.07] text-white/40 hover:text-lgray hover:border-white/10"
                     }`}
                   >
                     {d.label}
@@ -224,31 +191,26 @@ export default function CreatePoolForm() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setStep(1)}
-              className="flex items-center gap-1.5 px-5 py-3 border border-slate-700 text-slate-400 hover:text-white text-sm font-bold rounded-xl transition-colors"
-            >
-              <ChevronLeft size={15} />
-              Back
+            <button onClick={() => setStep(1)} className="flex items-center gap-1.5 px-5 py-3 border border-white/[0.07] text-white/40 hover:text-lgray text-sm font-bold rounded-xl transition-colors">
+              <ChevronLeft size={15} /> Back
             </button>
             <button
               onClick={() => setStep(3)}
               disabled={!form.targetParticipants || !form.targetPrice}
-              className="flex items-center justify-center gap-2 flex-1 py-3 bg-blue-600 hover:bg-blue-500 disabled:bg-slate-800 disabled:text-slate-600 text-white text-sm font-bold rounded-xl transition-colors"
+              className="flex items-center justify-center gap-2 flex-1 py-3 bg-brand hover:bg-brand/85 disabled:bg-surface-2 disabled:text-white/25 text-white text-sm font-bold rounded-xl transition-colors"
             >
-              Review Pool
-              <ChevronRight size={15} />
+              Review Pool <ChevronRight size={15} />
             </button>
           </div>
         </div>
       )}
 
-      {/* Step 3: Review */}
+      {/* Step 3 */}
       {step === 3 && (
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-7 flex flex-col gap-6">
+        <div className="bg-surface border border-white/[0.07] rounded-2xl p-7 flex flex-col gap-6">
           <div>
-            <h2 className="text-xl font-bold text-white mb-1">Review Your Pool</h2>
-            <p className="text-sm font-semibold text-slate-500">Double-check everything before publishing.</p>
+            <h2 className="text-xl font-bold text-lgray mb-1">Review Your Pool</h2>
+            <p className="text-sm font-semibold text-white/40">Double-check everything before publishing.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -260,12 +222,12 @@ export default function CreatePoolForm() {
               { icon: Clock, label: "Duration", value: `${form.duration} days` },
               { icon: Package, label: "Category", value: form.category },
             ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+              <div key={label} className="bg-surface-2 rounded-xl p-4 border border-white/[0.06]">
                 <div className="flex items-center gap-2 mb-1">
-                  <Icon size={13} className="text-blue-400" />
-                  <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">{label}</p>
+                  <Icon size={13} className="text-brand" />
+                  <p className="text-[11px] font-bold text-white/40 uppercase tracking-wider">{label}</p>
                 </div>
-                <p className="text-sm font-bold text-white">{value}</p>
+                <p className="text-sm font-bold text-lgray">{value}</p>
               </div>
             ))}
           </div>
@@ -273,20 +235,16 @@ export default function CreatePoolForm() {
           {savings > 0 && (
             <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4">
               <p className="text-sm font-bold text-emerald-400">
-                Each buyer saves ${Number(form.retailPrice) - Number(form.targetPrice)} ({savings}%) if the pool fills and a seller matches your target price.
+                Each buyer saves ${Number(form.retailPrice) - Number(form.targetPrice)} ({savings}%) if the pool fills.
               </p>
             </div>
           )}
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setStep(2)}
-              className="flex items-center gap-1.5 px-5 py-3 border border-slate-700 text-slate-400 hover:text-white text-sm font-bold rounded-xl transition-colors"
-            >
-              <ChevronLeft size={15} />
-              Back
+            <button onClick={() => setStep(2)} className="flex items-center gap-1.5 px-5 py-3 border border-white/[0.07] text-white/40 hover:text-lgray text-sm font-bold rounded-xl transition-colors">
+              <ChevronLeft size={15} /> Back
             </button>
-            <button className="flex-1 py-3 bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold rounded-xl transition-colors">
+            <button className="flex-1 py-3 bg-brand hover:bg-brand/85 text-white text-sm font-bold rounded-xl transition-colors">
               Publish Pool
             </button>
           </div>

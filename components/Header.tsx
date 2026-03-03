@@ -1,4 +1,5 @@
-import { Layers, Plus, Wallet } from "lucide-react";
+import Image from "next/image";
+import { Plus, Wallet } from "lucide-react";
 
 const navItems = [
   { label: "Pools", href: "/#pools" },
@@ -9,15 +10,19 @@ const navItems = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-dark/95 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
 
         <div className="flex items-center gap-10">
           <a href="/" className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-              <Layers size={15} className="text-white" />
-            </div>
-            <span className="text-lg font-bold text-white tracking-tight">sway</span>
+            <Image
+              src="/logo.jpg"
+              alt="Sway"
+              width={32}
+              height={32}
+              className="rounded-lg"
+            />
+            <span className="text-lg font-bold text-lgray tracking-tight">sway</span>
           </a>
 
           <nav className="hidden md:flex items-center">
@@ -25,7 +30,7 @@ export default function Header() {
               <a
                 key={item.label}
                 href={item.href}
-                className="px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-slate-800/60"
+                className="px-4 py-2 text-sm font-semibold text-white/50 hover:text-lgray transition-colors rounded-lg hover:bg-white/[0.05]"
               >
                 {item.label}
               </a>
@@ -36,12 +41,12 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <a
             href="/create"
-            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-slate-400 hover:text-white rounded-lg hover:bg-slate-800/60 transition-colors"
+            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white/50 hover:text-lgray rounded-lg hover:bg-white/[0.05] transition-colors"
           >
             <Plus size={14} />
             Create Pool
           </a>
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-sm font-bold text-white transition-colors">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand hover:bg-brand/85 text-sm font-bold text-white transition-colors">
             <Wallet size={14} />
             Connect Wallet
           </button>

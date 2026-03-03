@@ -73,6 +73,14 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme {
+    --color-brand: #FF394A;
+    --color-dark: #161617;
+    --color-surface: #1C1C1D;
+    --color-surface-2: #252526;
+    --color-lgray: #F5F5F9;
+}
+
 @theme inline {
     --font-sans: var(--font-quicksand);
     --color-sidebar-ring: var(--sidebar-ring);

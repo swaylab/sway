@@ -11,6 +11,7 @@ const quicksand = Quicksand({
 });
 
 export const metadata: Metadata = {
+  icons: { icon: "/logo.jpg" },
   title: "Sway — Buy Together, Save Together",
   description:
     "Web3-based collective buying platform. Pool demand, unlock bulk discounts, pay less — secured by smart contracts.",
@@ -23,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`dark ${quicksand.variable}`}>
-      <body className="bg-slate-950 antialiased">
+      <body className="bg-dark antialiased">
         <Header />
         {children}
         <Footer />
