@@ -1,18 +1,7 @@
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
-type Category = {
-  id: string;
-  label: string;
-  description: string;
-  imageUrl: string;
-  activePools: number;
-  totalSaved: string;
-};
-
-type Props = { category: Category };
-
-export default function CategoryCard({ category }: Props) {
+export default function CategoryCard({ category }: { category: Category }) {
   return (
     <a
       href={`/categories/${category.id}`}
@@ -20,7 +9,7 @@ export default function CategoryCard({ category }: Props) {
     >
       <div className="relative h-48 overflow-hidden bg-surface-2">
         <Image
-          src={category.imageUrl}
+          src={category.image_url ?? "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80&auto=format&fit=crop"}
           alt={category.label}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -35,16 +24,7 @@ export default function CategoryCard({ category }: Props) {
       <div className="p-5 flex flex-col gap-3">
         <p className="text-sm font-semibold text-white/40 leading-relaxed">{category.description}</p>
         <div className="flex items-center justify-between pt-2 border-t border-white/[0.06]">
-          <div className="flex items-center gap-4">
-            <div>
-              <p className="text-base font-bold text-lgray">{category.activePools}</p>
-              <p className="text-xs font-semibold text-white/40">Active Pools</p>
-            </div>
-            <div>
-              <p className="text-base font-bold text-emerald-400">${category.totalSaved}</p>
-              <p className="text-xs font-semibold text-white/40">Total Saved</p>
-            </div>
-          </div>
+          <p className="text-xs font-bold text-white/25 uppercase tracking-wider">Browse pools</p>
           <div className="flex items-center justify-center w-8 h-8 rounded-full bg-brand/15 text-brand group-hover:bg-brand group-hover:text-white transition-all">
             <ArrowRight size={14} />
           </div>

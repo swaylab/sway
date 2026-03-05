@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { ArrowRight, ShieldCheck, Users, TrendingDown } from "lucide-react";
-import { stats } from "@/lib/mock-data";
 
-export default function HeroSection() {
+type Stats = { activePools: number; members: number };
+
+export default function HeroSection({ stats }: { stats: Stats }) {
   return (
     <section className="bg-dark border-b border-white/[0.06]">
       {/* Top banner */}
@@ -56,7 +57,7 @@ export default function HeroSection() {
             <div className="grid grid-cols-3 gap-4">
               {[
                 { icon: Users, value: stats.activePools.toLocaleString(), label: "Active Pools" },
-                { icon: TrendingDown, value: `$${stats.totalSaved}`, label: "Total Saved", highlight: true },
+                { icon: TrendingDown, value: "$2.4M+", label: "Total Saved", highlight: true },
                 { icon: ShieldCheck, value: `${(stats.members / 1000).toFixed(0)}K+`, label: "Members" },
               ].map(({ icon: Icon, value, label, highlight }) => (
                 <div key={label} className="bg-surface border border-white/[0.06] rounded-2xl p-4">

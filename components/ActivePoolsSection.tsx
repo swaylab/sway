@@ -1,10 +1,9 @@
 import { SlidersHorizontal, ArrowRight } from "lucide-react";
-import { pools } from "@/lib/mock-data";
 import PoolCard from "@/components/PoolCard";
 
 const filters = ["All", "Hot", "Ending Soon", "New"];
 
-export default function ActivePoolsSection() {
+export default function ActivePoolsSection({ pools }: { pools: Pool[] }) {
   return (
     <section id="pools" className="bg-dark py-16">
       <div className="mx-auto max-w-7xl px-6">

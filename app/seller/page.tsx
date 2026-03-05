@@ -1,13 +1,16 @@
 import SellerHero from "@/components/seller/SellerHero";
 import HowItWorksForSellers from "@/components/seller/HowItWorksForSellers";
 import SellerPools from "@/components/seller/SellerPools";
+import { getPools } from "@/lib/queries/pools";
 
-export default function SellerPage() {
+export default async function SellerPage() {
+  const pools = await getPools();
+
   return (
-    <main className="bg-slate-950 min-h-screen">
+    <main className="bg-dark min-h-screen">
       <SellerHero />
       <HowItWorksForSellers />
-      <SellerPools />
+      <SellerPools pools={pools} />
     </main>
   );
 }

@@ -2,7 +2,6 @@ import {
   Flame, Smartphone, Gamepad2, ShoppingBag,
   Home, Sparkles, Dumbbell, BookOpen, type LucideIcon,
 } from "lucide-react";
-import { categories } from "@/lib/mock-data";
 
 const iconMap: Record<string, LucideIcon> = {
   all: Flame,
@@ -15,7 +14,7 @@ const iconMap: Record<string, LucideIcon> = {
   books: BookOpen,
 };
 
-export default function CategorySection() {
+export default function CategorySection({ categories }: { categories: Category[] }) {
   return (
     <section id="categories" className="bg-surface border-b border-white/[0.06]">
       <div className="mx-auto max-w-7xl px-6 py-4">
