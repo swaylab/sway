@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Plus, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 
 const navItems = [
   { label: "Pools", href: "/#pools" },
@@ -39,13 +39,6 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <a
-            href="/create"
-            className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white/50 hover:text-lgray rounded-lg hover:bg-white/[0.05] transition-colors"
-          >
-            <Plus size={14} />
-            Create Pool
-          </a>
           <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-brand hover:bg-brand/85 text-sm font-bold text-white transition-colors">
             <Wallet size={14} />
             Connect Wallet

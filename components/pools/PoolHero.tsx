@@ -1,5 +1,7 @@
 import Image from "next/image";
-import { Clock, Users, TrendingDown, Flame, Sparkles, AlertCircle } from "lucide-react";
+import { Clock, Users, TrendingDown, Flame, Sparkles, AlertCircle, ExternalLink } from "lucide-react";
+import JoinPoolButton from "@/components/pools/JoinPoolButton";
+import { ACTIVE_CHAIN } from "@/lib/contracts/SwayPool.abi";
 
 const statusMap: Record<string, { label: string; icon: React.ReactNode; cls: string }> = {
   hot: {
@@ -111,9 +113,28 @@ export default function PoolHero({ pool }: { pool: Pool }) {
           </p>
         </div>
 
-        <button className="w-full py-4 bg-brand hover:bg-brand/85 text-white text-base font-bold rounded-xl transition-colors">
-          Join Pool — ${pool.target_price.toLocaleString()} per unit
-        </button>
+        {pool.contract_address ? (
+          <>
+            <JoinPoolButton
+              contractAddress={pool.contract_address}
+              targetPrice={pool.target_price}
+            />
+            <a
+              href={`${ACTIVE_CHAIN.explorer}/address/${pool.contract_address}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-1.5 text-xs font-semibold text-white/30 hover:text-brand transition-colors"
+            >
+              <ExternalLink size={11} />
+              {pool.contract_address.slice(0, 10)}...{pool.contract_address.slice(-8)}
+              <span className="text-white/20">· Snowtrace</span>
+            </a>
+          </>
+        ) : (
+          <button className="w-full py-4 bg-brand/50 text-white/40 text-base font-bold rounded-xl cursor-not-allowed">
+            Contract deploying soon...
+          </button>
+        )}
       </div>
     </div>
   );
