@@ -118,6 +118,7 @@ export default function PoolHero({ pool }: { pool: Pool }) {
             <JoinPoolButton
               poolId={pool.id}
               contractAddress={pool.contract_address}
+              targetPrice={pool.target_price}
             />
             <a
               href={`${ACTIVE_CHAIN.explorer}/address/${pool.contract_address}`}

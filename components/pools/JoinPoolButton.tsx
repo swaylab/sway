@@ -9,6 +9,7 @@ import { supabase } from "@/lib/supabase/client";
 type Props = {
   poolId: string;
   contractAddress: string;
+  targetPrice: number;
 };
 
 type Status = "idle" | "connecting" | "switching" | "joining" | "success" | "error";
@@ -19,25 +20,10 @@ declare global {
   }
 }
 
-export default function JoinPoolButton({ poolId, contractAddress }: Props) {
+export default function JoinPoolButton({ poolId, contractAddress, targetPrice }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [account, setAccount] = useState<string | null>(null);
-  const [priceInAvax, setPriceInAvax] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadPrice() {
-      try {
-        const provider = new ethers.JsonRpcProvider(ACTIVE_CHAIN.rpc);
-        const contract = new ethers.Contract(contractAddress, SWAY_POOL_ABI, provider);
-        const price = await contract.pricePerUnit();
-        setPriceInAvax(ethers.formatEther(price));
-      } catch {
-        // silent
-      }
-    }
-    loadPrice();
-  }, [contractAddress]);
 
   useEffect(() => {
     if (!window.ethereum) return;
@@ -139,12 +125,12 @@ export default function JoinPoolButton({ poolId, contractAddress }: Props) {
   const loading = status === "connecting" || status === "switching" || status === "joining";
 
   const label: Record<Status, string> = {
-    idle: priceInAvax ? `Join Pool — ${parseFloat(priceInAvax).toFixed(2)} AVAX` : "Join Pool",
+    idle: `Join Pool — $${targetPrice.toLocaleString()}`,
     connecting: "Connecting wallet...",
     switching: "Switching to Avalanche...",
     joining: "Confirming transaction...",
     success: "Joined!",
-    error: priceInAvax ? `Retry — ${parseFloat(priceInAvax).toFixed(2)} AVAX` : "Retry",
+    error: `Retry — $${targetPrice.toLocaleString()}`,
   };
 
   return (
