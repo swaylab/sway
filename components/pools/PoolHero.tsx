@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Clock, Users, TrendingDown, Flame, Sparkles, AlertCircle, ExternalLink } from "lucide-react";
+import { Clock, Users, Flame, Sparkles, AlertCircle, ExternalLink } from "lucide-react";
 import JoinPoolButton from "@/components/pools/JoinPoolButton";
 import { ACTIVE_CHAIN } from "@/lib/contracts/SwayPool.abi";
 
@@ -116,19 +116,22 @@ export default function PoolHero({ pool }: { pool: Pool }) {
         {pool.contract_address ? (
           <>
             <JoinPoolButton
+              poolId={pool.id}
               contractAddress={pool.contract_address}
-              targetPrice={pool.target_price}
             />
             <a
               href={`${ACTIVE_CHAIN.explorer}/address/${pool.contract_address}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-1.5 text-xs font-semibold text-white/30 hover:text-brand transition-colors"
+              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl border border-white/[0.08] hover:border-brand/30 bg-surface hover:bg-brand/5 text-sm font-bold text-white/40 hover:text-brand transition-all"
             >
-              <ExternalLink size={11} />
-              {pool.contract_address.slice(0, 10)}...{pool.contract_address.slice(-8)}
-              <span className="text-white/20">· Snowtrace</span>
+              <Image src="/Avalanche_AvaxToken.png" alt="Avalanche" width={16} height={16} className="rounded-full" />
+              View on Avalanche Explorer
+              <ExternalLink size={13} />
             </a>
+            <p className="text-center text-[11px] font-mono text-white/20">
+              {pool.contract_address}
+            </p>
           </>
         ) : (
           <button className="w-full py-4 bg-brand/50 text-white/40 text-base font-bold rounded-xl cursor-not-allowed">

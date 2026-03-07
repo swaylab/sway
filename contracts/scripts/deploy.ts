@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config({ path: "../../.env.local" });
 
-const AVAX_PRICE_USD = 25; // rough estimate for AVAX → USD conversion display only
+const PRICE_PER_UNIT = "0.01"; // fixed AVAX per unit (testnet)
 
 async function main() {
   const [deployer] = await ethers.getSigners();
@@ -22,11 +22,10 @@ async function main() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Fetch pools that don't have a contract yet
+  // Fetch all pools (redeploy all)
   const { data: pools, error } = await supabase
     .from("pools")
-    .select("id, title, target_price, min_participants, contract_address")
-    .is("contract_address", null);
+    .select("id, title, target_price, min_participants, contract_address");
 
   if (error) throw error;
   if (!pools || pools.length === 0) {
@@ -39,13 +38,10 @@ async function main() {
   const SwayPool = await ethers.getContractFactory("SwayPool");
 
   for (const pool of pools) {
-    // Convert USD target_price to AVAX wei
-    // target_price is in USD — divide by AVAX_PRICE_USD to get AVAX, then to wei
-    const priceInAvax = pool.target_price / AVAX_PRICE_USD;
-    const priceInWei = ethers.parseEther(priceInAvax.toFixed(6));
+    const priceInWei = ethers.parseEther(PRICE_PER_UNIT);
 
     console.log(`Deploying "${pool.title}"`);
-    console.log(`  target_price: $${pool.target_price} → ${priceInAvax.toFixed(4)} AVAX per unit`);
+    console.log(`  price: ${PRICE_PER_UNIT} AVAX per unit`);
     console.log(`  min_participants: ${pool.min_participants}`);
 
     const contract = await SwayPool.deploy(priceInWei, pool.min_participants);

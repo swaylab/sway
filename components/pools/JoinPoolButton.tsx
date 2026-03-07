@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Wallet, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { SWAY_POOL_ABI, ACTIVE_CHAIN } from "@/lib/contracts/SwayPool.abi";
+import { supabase } from "@/lib/supabase/client";
 
 type Props = {
+  poolId: string;
   contractAddress: string;
-  targetPrice: number; // USD — shown in UI only, actual amount from contract
 };
 
 type Status = "idle" | "connecting" | "switching" | "joining" | "success" | "error";
@@ -18,13 +19,12 @@ declare global {
   }
 }
 
-export default function JoinPoolButton({ contractAddress, targetPrice }: Props) {
+export default function JoinPoolButton({ poolId, contractAddress }: Props) {
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [account, setAccount] = useState<string | null>(null);
   const [priceInAvax, setPriceInAvax] = useState<string | null>(null);
 
-  // Load price from contract on mount
   useEffect(() => {
     async function loadPrice() {
       try {
@@ -33,13 +33,12 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
         const price = await contract.pricePerUnit();
         setPriceInAvax(ethers.formatEther(price));
       } catch {
-        // contract not deployed yet — fall back silently
+        // silent
       }
     }
     loadPrice();
   }, [contractAddress]);
 
-  // Track wallet connection
   useEffect(() => {
     if (!window.ethereum) return;
     window.ethereum
@@ -68,12 +67,11 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
       setErrorMsg("");
 
       const browserProvider = new ethers.BrowserProvider(window.ethereum);
-
-      // Request account access
       const accounts = await browserProvider.send("eth_requestAccounts", []);
-      setAccount(accounts[0]);
+      const walletAddress: string = accounts[0];
+      setAccount(walletAddress);
 
-      // Check & switch chain
+      // Switch to Avalanche if needed
       const network = await browserProvider.getNetwork();
       if (Number(network.chainId) !== ACTIVE_CHAIN.chainId) {
         setStatus("switching");
@@ -82,7 +80,6 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
             { chainId: `0x${ACTIVE_CHAIN.chainId.toString(16)}` },
           ]);
         } catch {
-          // Chain not added — add it
           await browserProvider.send("wallet_addEthereumChain", [
             {
               chainId: `0x${ACTIVE_CHAIN.chainId.toString(16)}`,
@@ -98,10 +95,23 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
 
       const signer = await browserProvider.getSigner();
       const contract = new ethers.Contract(contractAddress, SWAY_POOL_ABI, signer);
-
       const price: bigint = await contract.pricePerUnit();
       const tx = await contract.join({ value: price });
-      await tx.wait();
+      const receipt = await tx.wait();
+
+      // Ensure user exists in users table
+      await supabase.from("users").upsert(
+        { wallet_address: walletAddress },
+        { onConflict: "wallet_address" }
+      );
+
+      // Save participant to Supabase
+      await supabase.from("pool_participants").insert({
+        pool_id: poolId,
+        wallet_address: walletAddress,
+        tx_hash: receipt.hash,
+        amount_locked: parseFloat(ethers.formatEther(price)),
+      });
 
       setStatus("success");
     } catch (err: unknown) {
@@ -128,17 +138,13 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
 
   const loading = status === "connecting" || status === "switching" || status === "joining";
 
-  const statusLabel: Record<Status, string> = {
-    idle: priceInAvax
-      ? `Join Pool — ${parseFloat(priceInAvax).toFixed(3)} AVAX`
-      : `Join Pool — $${targetPrice.toLocaleString()}`,
+  const label: Record<Status, string> = {
+    idle: priceInAvax ? `Join Pool — ${parseFloat(priceInAvax).toFixed(2)} AVAX` : "Join Pool",
     connecting: "Connecting wallet...",
     switching: "Switching to Avalanche...",
     joining: "Confirming transaction...",
     success: "Joined!",
-    error: priceInAvax
-      ? `Retry — ${parseFloat(priceInAvax).toFixed(3)} AVAX`
-      : `Retry — $${targetPrice.toLocaleString()}`,
+    error: priceInAvax ? `Retry — ${parseFloat(priceInAvax).toFixed(2)} AVAX` : "Retry",
   };
 
   return (
@@ -148,12 +154,8 @@ export default function JoinPoolButton({ contractAddress, targetPrice }: Props) 
         disabled={loading}
         className="relative w-full py-4 bg-brand hover:bg-brand/85 disabled:opacity-60 disabled:cursor-not-allowed text-white text-base font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
       >
-        {loading ? (
-          <Loader2 size={18} className="animate-spin" />
-        ) : (
-          <Wallet size={18} />
-        )}
-        {statusLabel[status]}
+        {loading ? <Loader2 size={18} className="animate-spin" /> : <Wallet size={18} />}
+        {label[status]}
       </button>
 
       {status === "error" && errorMsg && (
