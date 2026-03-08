@@ -44,10 +44,10 @@ export default function ActivePoolsSection({ pools }: { pools: Pool[] }) {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <button className="flex items-center gap-2 border border-white/[0.06] hover:border-white/10 bg-surface hover:bg-surface-2 px-8 py-3 rounded-xl text-sm font-bold text-white/40 hover:text-lgray transition-all">
+          <a href="/pools" className="flex items-center gap-2 border border-white/[0.06] hover:border-white/10 bg-surface hover:bg-surface-2 px-8 py-3 rounded-xl text-sm font-bold text-white/40 hover:text-lgray transition-all">
             View all pools
             <ArrowRight size={14} />
-          </button>
+          </a>
         </div>
 
       </div>
